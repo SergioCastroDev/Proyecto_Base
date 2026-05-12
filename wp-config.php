@@ -20,7 +20,7 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'base_proyect' );
+define( 'DB_NAME', 'proyecto_base' );
 
 /** Database username */
 define( 'DB_USER', 'root' );
@@ -89,7 +89,8 @@ define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
-
+define('WP_HOME', 'http://localhost/Proyecto_Base');
+define('WP_SITEURL', 'http://localhost/Proyecto_Base');
 
 /* That's all, stop editing! Happy publishing. */
 

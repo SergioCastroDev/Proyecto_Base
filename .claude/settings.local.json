@@ -8,7 +8,11 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\plugins\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
       "Bash(dir *)",
       "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Recurse -File | Select-Object Name, Directory | Where-Object { $_.Name -match \"metabox|cmb\" })",
-      "PowerShell(Select-String *)"
+      "PowerShell(Select-String *)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost/Proyecto_Base/\" -MaximumRedirection 5 -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost/Proyecto_Base/wp-admin/\" -MaximumRedirection 0 -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\" } catch { \"Status: $\\($_.Exception.Response.StatusCode.value__\\) - Location: $\\($_.Exception.Response.Headers.Location\\)\" })",
+      "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.4.3-winx64\\\\bin\\\\mysql.exe\" -u root -P 3306 proyecto_base -e \"SELECT ID, user_login, user_email, user_registered FROM wp_users;\")",
+      "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.4.3-winx64\\\\bin\\\\mysql.exe\" -u root -P 3306 proyecto_base -e \"SELECT option_name, LEFT\\(option_value,200\\) FROM wp_options WHERE option_value LIKE '%Base_proyect%' OR option_value LIKE '%Proyect_Base%';\")"
     ]
   }
 }
