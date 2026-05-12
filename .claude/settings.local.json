@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\themes\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\Planes\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\plugins\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "Bash(dir *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Base_proyect\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Recurse -File | Select-Object Name, Directory | Where-Object { $_.Name -match \"metabox|cmb\" })",
+      "PowerShell(Select-String *)"
+    ]
+  }
+}

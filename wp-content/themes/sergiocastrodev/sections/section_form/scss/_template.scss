@@ -1,0 +1,330 @@
+@use "_mixins" as *;
+@use "_variables" as *;
+@use "../../../assets/scss/variables" as *;
+.section_sergio_form {
+    padding: 130px 20px 50px;
+    margin-top: 60px;
+    background: #0d101c7d;
+    border-top: 1px solid #1df7ff1a;
+    box-shadow: 0 20px 100px -30px rgb(44 248 255 / 69%);
+    @include desktop {
+        padding: 130px 20px 110px;
+        box-shadow: 0px 90px 160px -100px rgba(44, 248, 255, .4);
+
+    }
+    &::after {
+        content: "";
+        display: block;
+        width: 690px;
+        height: 720px;
+        background: radial-gradient(circle, rgb(19 225 187 / 39%) 0%, rgba(19, 225, 187, 0) 100%);
+        border-radius: 50%;
+        position: absolute;
+        top: 0px;
+        left: -400px;
+        filter: blur(70px);
+        transition: .5s;
+        z-index: 1;
+    }
+    .section_width_sergio_form {
+        max-width: 1140px;
+        margin: 0 auto;
+        z-index: 2;
+        .sergio_icon {
+            width: 130px;
+            height: 130px;
+            position: absolute;
+            left: 50%;
+            top: -200px;
+            transition: 0.3s;
+            background-color: #13e1bbc2;
+            backdrop-filter: blur(2px);
+            transform: translateX(-50%);
+            z-index: 1;
+            padding: 10px;
+            background: radial-gradient(circle, rgb(19 225 187 / 40%) 0%, rgba(19, 225, 187, 0) 100%);
+            border: 1px solid grey;
+            border-radius: 50%;
+            opacity: 0.7;
+            @include desktop {
+                right: 0px;
+                top: -190px;
+                opacity: 1;
+            }
+            svg {
+                width: 100%;
+                height: 100%;
+                &:first-of-type {
+                    animation: rotate-form 10s linear infinite;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 90%;
+                    height: 90%;
+                }
+                &:last-of-type {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 40px;
+                    height: 40px;
+                }
+                @keyframes rotate-form {
+                    from {
+                        transform: translate(-50%, -50%) rotate(0deg);
+                    }
+                    to {
+                        transform: translate(-50%, -50%) rotate(360deg);
+                    }
+                }
+            }
+        }
+        .sergio_info {
+            .sergio_caption {
+                font-size: 18px;
+                line-height: 30px;
+                font-family: $primary;
+                color: $c-c2;
+                font-weight: normal;
+                padding-right: 30px;
+                text-align: center;
+            }
+            h2 {
+                font-size: 30px;
+                line-height: 42px;
+                font-family: $syne-extrabold;
+                color: $c-c2;
+                font-weight: normal;
+                text-transform: uppercase;
+                text-align: center;
+                @include desktop {
+                    font-size: 50px;
+                    line-height: 62px;
+                }
+            }
+        }
+        .sergio_form_container {
+            margin-top: 30px;
+            @include desktop {
+                @include flexbox;
+                @include justify-content(center);
+                @include align-items(stretch);
+            }
+        }
+        .wpcf7 {
+            position: relative;
+            padding: 20px;
+            border: 1px solid hsla(0, 0%, 100%, .1019607843);
+            backdrop-filter: blur(40px);
+            background-color: rgba(89, 91, 115, .1019607843);
+            border-radius: 0 0 20px 20px;
+            border-top: 0px;
+            @include tablet {
+                z-index: 2;
+            }
+            @include desktop {
+                max-width: 600px;
+                margin: 0 0 0 auto;
+            }
+            .screen-reader-response {
+                display: none;
+            }
+            .container_input {
+                text-align: start;
+                margin-bottom: 20px;
+                label {
+                    font-size: 24px;
+                    line-height: 36px;
+                    font-family: $primary;
+                    color: $c-white;
+                    display: none;
+                }
+                input, textarea {
+                    font-size: 18px;
+                    line-height: 30px;
+                    font-family: $primary;
+                    color: $c-c2;
+                    background-color: #ffffff26;
+                    backdrop-filter: blur(10px);
+                    padding: 10px;
+                    border: 1px solid #ffffff36;
+                    border-radius: 12px;
+                    width: 100%;
+                    resize: none;
+                    max-height: 150px;
+                    &::placeholder {
+                        font-size: 18px;
+                        line-height: 30px;
+                        font-family: $primary;
+                        color: $c-c2;
+                    }
+                }
+                .wpcf7-not-valid-tip {
+                    font-size: 18px;
+                    line-height: 30px;
+                    font-family: $primary;
+                    color: $c-c2;
+                    margin-top: 10px;
+                }
+                .wpcf7-not-valid {
+                    border: 1px solid rgb(137, 6, 6);
+                }
+            }
+            .acceptance {
+                display: inline-block;
+            }
+            .acceptance .wpcf7-list-item-label {
+                padding-left: 30px;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .acceptance .wpcf7-list-item-label, .acceptance .wpcf7-list-item-label a {
+                font-size: 18px;
+                line-height: 30px;
+                font-family: $primary;
+                color: $c-white;
+                @include tablet {
+                    font-size: 15px;
+                    line-height: 27px;
+                    font-family: "poppins";
+                    color: #fff;
+                }
+            }
+            .acceptance label span::after  {
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                background-color: transparent;
+                border: 1px solid #e0e0e0;
+                box-sizing: border-box;
+                border-radius: 6px;
+                transition: .3s;
+                z-index: 5;
+            }
+            .acceptance label input[type="checkbox"]:checked ~ span::after {
+                background-color: #13e1bb75;
+            }
+            .acceptance label input[type="checkbox"]:checked ~ span::before {
+                content: "✓";
+                position: absolute;
+                top: -4px;
+                left: 0px;
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                pointer-events: none;
+                transition: .3s;
+                z-index: 10;
+                font-size: 17px;
+            }
+            .container_button {
+                display: inline-block;
+                margin-top: 30px;
+                width: 100%;
+                @include tablet {
+                    margin-top: 20px;
+                }
+                @include desktop {
+                    margin-top: 0px;
+                    margin-left: 70px;
+                    width: initial;
+                }
+                input.wpcf7-submit {
+                    font-size: 18px;
+                    line-height: 20px;
+                    font-family: "bebasnue";
+                    background-color: #f9ffe5;
+                    border: 0px;
+                    color: #1a1a1a;
+                    text-transform: uppercase;
+                    padding: 10px 40px 10px 40px;
+                    border-radius: 30px;
+                    text-decoration: none;
+                    display: block;
+                    text-align: center;
+                    transition: .3s;
+                    width: 100%;
+                    &:hover {
+                        background-color: #193331;
+                        color: $c-c2;
+                    }
+                    @include desktop {
+                        max-width: fit-content;
+                    }
+                }
+            }
+            form.invalid.after, form.unaccepted.after, form.sent.after {
+                &::after {
+                    display: none;
+                }
+            }
+            form.sent {
+                .screen-reader-response {
+                    display: none;
+                }
+                .wpcf7-response-output {
+                    margin-top: 20px;
+                    padding: 5px;
+                    border: 1px solid #aed76f;
+                    font-size: 14px;
+                    line-height: 26px;
+                    font-family: "poppins";
+                    color: #f9ffe5;
+                    border-radius: 12px;
+                    background-color: hsla(0, 0%, 100%, .1490196078);
+                    backdrop-filter: blur(10px);
+                    text-align: center;
+                    z-index: 151;
+                }
+            }
+            form.invalid, form.unaccepted, form.failed {
+                .wpcf7-response-output {
+                    margin-top: 20px;
+                    padding: 5px;
+                    border: 1px solid #911305;
+                    font-size: 14px;
+                    line-height: 26px;
+                    font-family: "poppins";
+                    color: #f9ffe5;
+                    border-radius: 12px;
+                    background-color: hsla(0, 0%, 100%, .1490196078);
+                    backdrop-filter: blur(10px);
+                    text-align: center;
+                    z-index: 151;
+                }
+            }
+        }
+        picture {
+            display: block;
+            height: fit-content;
+            backdrop-filter: blur(40px);
+            background-color: rgba(89, 91, 115, 0.1019607843);
+            border: 1px solid hsla(0, 0%, 100%, 0.1019607843);
+            z-index: 1;
+            border-radius: 20px 20px 0 0;
+            @include tablet {
+                height: 450px;
+                border-radius: 20px 20px 0 0;
+            }
+            @include desktop {
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 20px 20px 20px 0;
+            }
+            img {
+                @include tablet {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

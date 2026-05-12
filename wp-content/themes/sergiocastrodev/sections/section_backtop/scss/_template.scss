@@ -1,0 +1,31 @@
+@use "_mixins" as *;
+@use "_variables" as *;
+@use "../../../assets/scss/variables" as *;
+.section_sergio_backtop {
+    position: fixed;
+    bottom: -1px;
+    right: -1px;
+    background: #09332b85;
+    backdrop-filter: blur(3px);
+    border: 1px solid #ffffff7d;
+    z-index: 999;
+    width: 60px;
+    height: 60px;
+    border-radius: 80% 0 0 0;
+    transition: .3s;
+    &:hover {
+        cursor: pointer;
+        background: #09332b;
+    }
+    span {
+        display: inline-block;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        svg {
+            max-height: 30px;
+            transform: rotate(-180deg);
+        }
+    }
+}

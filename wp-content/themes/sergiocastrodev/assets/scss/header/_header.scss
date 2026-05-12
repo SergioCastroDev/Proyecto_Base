@@ -1,0 +1,227 @@
+@use "../mixins" as *;
+@use "../variables" as *;
+
+// Animación de parpadeo suave
+@keyframes softPulse {
+    0%, 100% {
+        background-color: #08181600;
+    }
+    50% {
+        background-color: #0c4f3f;
+        box-shadow: 0 0 0 0 rgba(3, 91, 75, 0);
+    }
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #01010133;
+    backdrop-filter: blur(8px);
+    padding: 0 20px;
+    z-index: 99;
+    filter: drop-shadow(0px 4px 4.3px rgba(0, 0, 0, 0.51));
+    @include desktop {
+        top: 20px;
+        background-color: transparent;
+        backdrop-filter: none;
+        filter: none;
+    }
+    .header_width {
+        position: static;
+        @include flexbox;
+        @include justify-content(start);
+        @include align-items(center);
+        width: 100%;
+        padding: 20px 0;
+        max-width: 1140px;
+        margin: 0 auto;
+        @include desktop {
+            background: rgba(22, 56, 50, 0.40);
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            @include justify-content(center);
+        }
+        figure {
+            height: 50px;
+            width: 100%;
+            @include desktop {
+                width: auto;
+                padding-right: 100px;
+                border-right: 2px solid white;
+            }
+            img {
+                height: 100%;
+                width: auto;
+                object-fit: contain;
+            }
+        }
+        .toggle_menu {
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 80px;
+            width: 80px;
+            @include desktop {
+                display: none;
+            }
+            span {
+                content: "";
+                display: block;
+                width: 15px;
+                height: 2px;
+                background-color: $c-c2;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: 0.3s;
+                border-radius: 50px;
+                &.top {
+                    top: 36px;
+                    transform: translateX(-50%);
+                }
+                &.bottom {
+                    top: 42px;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+        .container_menu {
+            position: absolute;
+            top: -1000%;
+            right: 0;
+            width: 20px;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #042d25;
+            transition: 0.5s;
+            padding: 30px 0;
+            z-index: -1;
+            @include desktop {
+                position: relative;
+                top: initial;
+                right: initial;
+                width: initial;
+                height: initial;
+                background-color: initial;
+                padding: initial;
+                transition: 0s;
+                z-index: initial;
+            }
+            nav {
+                ul{
+                    list-style: none;
+                    @include desktop {
+                        @include flexbox;
+                        @include justify-content(start);
+                        @include align-items(center);
+                        padding-left: 100px;
+                    }
+                    li{ 
+                        text-align: center;
+                        opacity: 0;
+                        a {
+                            font-size: 16px;
+                            line-height: 30px;
+                            text-align: center;
+                            color: $c-white;
+                            text-decoration: none;
+                            white-space: nowrap;
+                            font-family: $primary-bold;
+                        }
+                        @include desktop {
+                            text-align: initial;
+                            opacity: 1;
+                            padding: 10px 20px;
+                            margin-right: 20px;
+                            border-radius: 50px;
+                            transition: 0.3s;
+                            &:hover {
+                                background-color: $c-c2;
+                                a {
+                                    color: $c-black;
+                                    transition: 0.3s;
+                                }
+                            }
+                            &:last-child {
+                                background-color: #035B4B;
+                                animation: softPulse 5s ease-in-out infinite;
+                                &:hover {
+                                    color: $c-white;
+                                    animation: initial;
+                                    background-color: $c-c2;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.open_menu {
+    .header_width {
+        .toggle_menu{
+            span {
+                &.top {
+                    top: 40px;
+                    transform: translateX(-50%) rotate(45deg);
+                }
+                &.middle {
+                    display: none;
+                }
+                &.bottom {
+                    top: 38px;
+                    transform: translateX(-50%) rotate(-45deg);
+                }
+            }
+        }
+        .container_menu {
+            top: 90px;
+        }
+    }
+}
+.menu_fw {
+    .header_width {
+        .toggle_menu{
+            span {
+
+            }
+        }
+        .container_menu {
+            width: 60%;
+            padding: 0px 5px;
+            overflow: initial;
+            ul {
+                padding: 0;
+                li {
+                    opacity: 1;
+                    &::before {
+                        content: "";
+                        width: 100%;
+                        height: 2px;
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
+                        display: block;
+                        background: linear-gradient(90deg,rgba(249, 255, 229, 0) 0%, rgba(249, 255, 229, 1) 50%, rgba(249, 255, 229, 0) 100%);
+                        border-width: 0px;
+                        transition: .3s;
+                    }
+                    &:hover::before {
+                        width: 0px;
+                    }
+                    a {
+                        padding: 20px 0;
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}

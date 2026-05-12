@@ -1,0 +1,151 @@
+@use "../mixins" as *;
+@use "../variables" as *;
+
+footer {
+    padding: 80px 20px;
+    position: sticky;
+    inset: auto 0% 0%;
+    background-color: #000202;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    &.footer-visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    @include desktop {
+        &:hover {
+            cursor: none;
+        }
+        &:has(a:hover) span {
+            transform: translate(calc(var(--mouse-x) - 40px), calc(var(--mouse-y) - 100px)) scale(1.5);
+        }
+        &:has(a:hover) {
+            cursor: none!important;
+        }
+    }
+    .footer_slider_contact {
+        font-size: 30px;
+        line-height: 42px;
+        font-family: $primary-extrabold;
+        color: #f9ffe5;
+        text-align: start;
+        text-decoration: none;
+        padding-right: 50px;
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        max-width: 430px;
+        @include desktop {
+            font-size: 70px;
+            line-height: 82px;
+            max-width: initial;
+            font-family: $primary-extrabold;
+            max-width: initial;
+            margin-bottom: 50px;
+            padding: 0;
+            text-align: center;
+            position: static;
+            &:hover {
+                span {
+                    transform: translate(calc(var(--mouse-x) - 40px), calc(var(--mouse-y) - 100px)) scale(1.5);
+                }
+            }
+        }
+        span {
+            display: flex;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50px;
+            background-color: #1BFEAF;
+            padding: 10px;
+            transition: scale .1s;
+            @include desktop {
+                display: none;
+                opacity: 1;
+                position: absolute;
+                top: 0;
+                left: 0;
+                transform: translate(calc(var(--mouse-x) - 40px), calc(var(--mouse-y) - 100px));
+                pointer-events: none;
+                z-index: 1;
+            }
+            svg {
+                width: 100%;
+                height: 100%;
+                vertical-align: initial;
+                transform: rotate(-135deg);
+                path {
+                    stroke: #04181A;
+                }
+            }
+        }
+    }
+    .footer_social {
+        border-radius: 50px;
+        border: 1px solid grey;
+        @include flexbox;
+        @include justify-content(center);
+        @include align-items(center);
+        overflow: hidden;
+        max-width: 800px;
+        margin: 30px auto 0;
+        a {
+            display: block;
+            width: 50%;
+            transition: .3s;
+            padding: 20px;
+            text-align: center;
+            background: transparent;
+            &:first-of-type {
+                border-right: 1px solid grey;
+            }
+            &:hover {
+                background: linear-gradient(90deg,rgba(249, 255, 229, 1) 0%, rgba(2, 72, 59, 1) 78%);
+                svg {
+                    path {
+                        fill: black;
+                    }
+                }
+            }
+            svg {
+                width: auto;
+                height: 25px;
+                & * {
+                    transition: .3s;
+                }
+            }
+        }
+    }
+    .footer_contact {
+        @include flexbox;
+        @include justify-content(center);
+        @include align-items(center);
+        @include flex-direction(column);
+        margin-top: 30px;
+        gap: 20px;
+        a:has(svg), a:has(img) {
+            width: 62px;
+            text-align: center;
+        }
+        a, p {
+            font-size: 18px;
+            line-height: 30px;
+            font-family: $primary;
+            color: $c-c2;
+            text-align: center;
+            text-decoration: none;
+            transition: .3s;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    a:hover {
+        cursor: none;
+    }
+}

@@ -1,0 +1,323 @@
+// Mixins
+// @mixin titulos($fsize, $color: $c-negro){
+//     font-family:'helvetica',serif;
+//     color: $color;
+//     font-size: $fsize;
+// }
+@mixin flexbox {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  
+  %flexbox { @include flexbox; }
+  
+  //----------------------------------
+  
+  @mixin inline-flex {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+  }
+  
+  %inline-flex { @include inline-flex; }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-direction($value: row) {
+    @if $value == row-reverse {
+      -webkit-box-direction: reverse;
+      -webkit-box-orient: horizontal;
+    } @else if $value == column {
+      -webkit-box-direction: normal;
+      -webkit-box-orient: vertical;
+    } @else if $value == column-reverse {
+      -webkit-box-direction: reverse;
+      -webkit-box-orient: vertical;
+    } @else {
+      -webkit-box-direction: normal;
+      -webkit-box-orient: horizontal;
+    }
+    -webkit-flex-direction: $value;
+    -moz-flex-direction: $value;
+    -ms-flex-direction: $value;
+    flex-direction: $value;
+  }
+    // Shorter version:
+    @mixin flex-dir($args...) { @include flex-direction($args...); }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-wrap($value: nowrap) {
+    // No Webkit Box fallback.
+    -webkit-flex-wrap: $value;
+    -moz-flex-wrap: $value;
+    @if $value == nowrap {
+      -ms-flex-wrap: none;
+    } @else {
+      -ms-flex-wrap: $value;
+    }
+    flex-wrap: $value;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-flow($values: (row nowrap)) {
+    // No Webkit Box fallback.
+    -webkit-flex-flow: $values;
+    -moz-flex-flow: $values;
+    -ms-flex-flow: $values;
+    flex-flow: $values;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin order($int: 0) {
+    -webkit-box-ordinal-group: $int + 1;
+    -webkit-order: $int;
+    -moz-order: $int;
+    -ms-flex-order: $int;
+    order: $int;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-grow($int: 0) {
+    -webkit-box-flex: $int;
+    -webkit-flex-grow: $int;
+    -moz-flex-grow: $int;
+    -ms-flex-positive: $int;
+    flex-grow: $int;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-shrink($int: 1) {
+    -webkit-flex-shrink: $int;
+    -moz-flex-shrink: $int;
+    -ms-flex-negative: $int;
+    flex-shrink: $int;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex-basis($value: auto) {
+    -webkit-flex-basis: $value;
+    -moz-flex-basis: $value;
+    -ms-flex-preferred-size: $value;
+    flex-basis: $value;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin flex($fg: 1, $fs: null, $fb: null) {
+  
+    // Set a variable to be used by box-flex properties
+    $fg-boxflex: $fg;
+  
+    // Box-Flex only supports a flex-grow value so let's grab the
+    // first item in the list and just return that.
+    @if type-of($fg) == 'list' {
+      $fg-boxflex: nth($fg, 1);
+    }
+  
+    -webkit-box-flex: $fg-boxflex;
+    -webkit-flex: $fg $fs $fb;
+    -moz-box-flex: $fg-boxflex;
+    -moz-flex: $fg $fs $fb;
+    -ms-flex: $fg $fs $fb;
+    flex: $fg $fs $fb;
+  }
+  
+  //----------------------------------------------------------------------
+  
+  @mixin justify-content($value: flex-start) {
+    @if $value == flex-start {
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+    } @else if $value == flex-end {
+      -webkit-box-pack: end;
+      -ms-flex-pack: end;
+    } @else if $value == space-between {
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+    } @else if $value == space-around {
+      -ms-flex-pack: distribute;
+    } @else {
+      -webkit-box-pack: $value;
+      -ms-flex-pack: $value;
+    }
+    -webkit-justify-content: $value;
+    -moz-justify-content: $value;
+    justify-content: $value;
+  }
+    // Shorter version:
+    @mixin flex-just($args...) { @include justify-content($args...); }
+  
+  //----------------------------------------------------------------------
+  @mixin align-items($value: stretch) {
+    @if $value == flex-start {
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+    } @else if $value == flex-end {
+      -webkit-box-align: end;
+      -ms-flex-align: end;
+    } @else {
+      -webkit-box-align: $value;
+      -ms-flex-align: $value;
+    }
+    -webkit-align-items: $value;
+    -moz-align-items: $value;
+    align-items: $value;
+  }
+  
+  //----------------------------------
+  
+  @mixin align-self($value: auto) {
+    // No Webkit Box Fallback.
+    -webkit-align-self: $value;
+    -moz-align-self: $value;
+    @if $value == flex-start {
+      -ms-flex-item-align: start;
+    } @else if $value == flex-end {
+      -ms-flex-item-align: end;
+    } @else {
+      -ms-flex-item-align: $value;
+    }
+    align-self: $value;
+  }
+  
+  //----------------------------------------------------------------------
+  @mixin shadow($x,$y,$blur,$color){
+      -webkit-box-shadow: $x $y $blur $color;
+      -moz-box-shadow: $x $y $blur $color;
+      -o-box-shadow: $x $y $blur $color;
+      box-shadow: $x $y $blur $color;
+  }
+  @mixin transition($tiempo){
+      -webkit-transition: $tiempo;
+      -moz-transition: $tiempo;
+      -o-transition: $tiempo;
+      transition: $tiempo;
+  }
+  @mixin filtro-gris{
+      -webkit-filter: grayscale(1) invert(0.4) opacity(1);
+      filter: grayscale(1) invert(0.4) opacity(1);
+  }
+  @mixin alinear-centro($position: relative) {
+      position: $position;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+  }
+  @mixin column($count,$gap,$rule){
+      -webkit-column-count: $count; /* Chrome, Safari, Opera */
+      -moz-column-count: $count; /* Firefox */
+      column-count: $count;
+  
+      -webkit-column-gap: $gap; /* Chrome, Safari, Opera */
+      -moz-column-gap: $gap; /* Firefox */
+      column-gap: $gap;
+  
+      -webkit-column-rule: rule; /* Chrome, Safari, Opera */
+      -moz-column-rule: rule; /* Firefox */
+      column-rule: rule;
+  }
+  @mixin roto-interior($rule) {
+      -webkit-column-break-inside: $rule; /* Chrome, Safari, Opera */
+      page-break-inside: $rule; /* Firefox */
+      break-inside: $rule; /* IE 10+ */
+  }
+  // Media Queries
+  @mixin mobile375 {
+      @media (min-width: 375px) {
+          @content;
+      }
+  }
+  @mixin mobilehd {
+      @media (min-width: 414px) {
+          @content;
+      }
+  }
+  @mixin only_mobile {
+      @media (max-width: 767px) {
+          @content;
+      }
+  }
+  @mixin tablet {
+      @media (min-width: 768px) {
+          @content;
+      }
+  }
+  @mixin mobile_tablet {
+      @media ( max-width: 1023px ) {
+          @content;
+      }
+  }
+  @mixin only_tablet {
+      @media ( min-width: 768px ) and ( max-width: 1023px ) {
+          @content;
+      }
+  }
+  @mixin desktop {
+      @media (min-width: 1024px) {
+          @content;
+      }
+  }
+  @mixin desktop1200 {
+      @media (min-width: 1200px) {
+          @content;
+      }
+  }
+  @mixin desktop1280 {
+      @media (min-width: 1280px) {
+          @content;
+      }
+  }
+  @mixin desktop1350 {
+      @media (min-width: 1350px) {
+          @content;
+      }
+  }
+  @mixin desktop1400 {
+      @media (min-width: 1400px) {
+          @content;
+      }
+  }
+  @mixin desktop1440 {
+      @media (min-width: 1440px) {
+          @content;
+      }
+  }
+  @mixin desktop1680 {
+      @media (min-width: 1680px) {
+          @content;
+      }
+  }
+  @mixin desktop1920 {
+      @media (min-width: 1920px) {
+          @content;
+      }
+  }
+  // FIN Media Queries
+  @mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+      @content;
+    }
+    @-moz-keyframes #{$name} {
+      @content;
+    }
+    @-ms-keyframes #{$name} {
+      @content;
+    }
+    @keyframes #{$name} {
+      @content;
+    }
+  }
+  // FIN Mixin
+  

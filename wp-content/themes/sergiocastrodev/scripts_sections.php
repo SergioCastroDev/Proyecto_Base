@@ -1,0 +1,11 @@
+<script>
+    <?php
+        include_once( 'sections/section_main/js/script.js' );
+        // include_once( 'sections/section_about_me/js/script.js' );
+        include_once( 'sections/section_tools/js/script.js' );
+        include_once( 'templates/header/script.js' );
+        include_once( 'sections/section_clients/js/script.js' );
+        include_once( 'sections/section_form/js/script.js' );
+        include_once( 'sections/section_backtop/js/script.js' );
+    ?>
+</script>
