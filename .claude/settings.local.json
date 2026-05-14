@@ -25,7 +25,13 @@
       "WebSearch",
       "WebFetch(domain:gsap.com)",
       "WebFetch(domain:tympanus.net)",
-      "WebFetch(domain:cdn.jsdelivr.net)"
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(wp --version)",
+      "Bash(mysql --version)",
+      "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.0.35-winx64\\\\bin\\\\mysql.exe\" -u root -e \"SHOW DATABASES;\" 2>&1)",
+      "Bash(/c/laragon/bin/mysql/mysql-8.4.3-winx64/bin/mysql.exe *)",
+      "PowerShell(net stop *)",
+      "PowerShell(cmd /c \"where node 2>nul\"; cmd /c \"where npm 2>nul\"; cmd /c \"where ruby 2>nul\"; cmd /c \"where choco 2>nul\"; cmd /c \"where scoop 2>nul\")"
     ]
   }
 }
