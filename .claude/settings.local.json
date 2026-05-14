@@ -12,7 +12,20 @@
       "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost/Proyecto_Base/\" -MaximumRedirection 5 -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $\\($_.Exception.Message\\)\" })",
       "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost/Proyecto_Base/wp-admin/\" -MaximumRedirection 0 -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\" } catch { \"Status: $\\($_.Exception.Response.StatusCode.value__\\) - Location: $\\($_.Exception.Response.Headers.Location\\)\" })",
       "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.4.3-winx64\\\\bin\\\\mysql.exe\" -u root -P 3306 proyecto_base -e \"SELECT ID, user_login, user_email, user_registered FROM wp_users;\")",
-      "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.4.3-winx64\\\\bin\\\\mysql.exe\" -u root -P 3306 proyecto_base -e \"SELECT option_name, LEFT\\(option_value,200\\) FROM wp_options WHERE option_value LIKE '%Base_proyect%' OR option_value LIKE '%Proyect_Base%';\")"
+      "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.4.3-winx64\\\\bin\\\\mysql.exe\" -u root -P 3306 proyecto_base -e \"SELECT option_name, LEFT\\(option_value,200\\) FROM wp_options WHERE option_value LIKE '%Base_proyect%' OR option_value LIKE '%Proyect_Base%';\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Proyecto_Base\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Recurse)",
+      "Bash(Select-Object FullName, Name)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Proyecto_Base\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(head *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\laragon\\\\www\\\\Proyecto_Base\\\\wp-content\\\\themes\\\\sergiocastrodev\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(sass --style=compressed --no-source-map assets/scss/style.scss:assets/css/style.css)",
+      "WebSearch",
+      "WebFetch(domain:gsap.com)",
+      "WebFetch(domain:tympanus.net)",
+      "WebFetch(domain:cdn.jsdelivr.net)"
     ]
   }
 }

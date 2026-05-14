@@ -1,0 +1,222 @@
+@use "../../../assets/scss/variables" as *;
+@use "../../../assets/scss/mixins" as *;
+@use "variables" as *;
+
+.section_services_1 {
+    padding: 40px 20px;
+    background-color: $m-cream;
+    @include desktop {
+        padding: 80px 20px 60px;
+    }
+
+    .section_width_services_1 {
+        max-width: 1200px;
+        margin: 0 auto;
+        @include flexbox;
+        @include flex-direction(column);
+        gap: 0;
+    }
+
+    // ── Top: headline + quote ─────────────────────────────
+    .services_1_top {
+        @include flexbox;
+        @include flex-direction(column);
+        gap: 24px;
+        padding-bottom: 48px;
+
+        @include desktop {
+            @include flex-direction(row);
+            @include align-items(flex-start);
+            gap: 60px;
+            padding-bottom: 56px;
+        }
+    }
+
+    .services_1_headline {
+        font-family: $secondary;
+        font-size: clamp(28px, 4.5vw, 48px);
+        color: $m-dark;
+        font-weight: normal;
+        line-height: 1.15;
+        margin: 0;
+        max-width: 18ch;
+
+        @include desktop {
+            flex: 0 0 52%;
+            max-width: none;
+        }
+    }
+
+    .services_1_headline_accent {
+        font-family: $secondary-italic;
+        font-style: normal;
+        color: $m-brown;
+    }
+
+    .services_1_quote {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.75;
+        color: rgba($m-dark, .6);
+        margin: 0;
+        padding: 0 0 0 16px;
+        border-left: 2px solid rgba($m-dark, .2);
+
+        @include desktop {
+            flex: 1;
+            padding-top: 4px;
+        }
+    }
+
+    // ── Cards ─────────────────────────────────────────────
+    .services_1_card {
+        @include flexbox;
+        @include flex-direction(column);
+        gap: 12px;
+        padding: 24px;
+        height: 100%;
+        background: #fff;
+        border: 2px solid rgba(219, 194, 176, 0.3);
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba($m-dark, .08);
+        transition: box-shadow .35s;
+        transform-style: preserve-3d;
+
+        &:hover {
+            box-shadow: 0 10px 42px rgba($m-dark, .16);
+        }
+    }
+
+    .services_1_card_divider {
+        height: 1px;
+        background: rgba($m-dark, 0.1);
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .services_1_card_icon {
+        width: 36px;
+        height: 36px;
+        color: $m-brown;
+        flex-shrink: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            * {
+                stroke: $m-brown;
+                stroke-width: 2px;
+            }
+        }
+    }
+
+    .services_1_card_title {
+        font-family: $secondary;
+        font-size: 26px;
+        font-weight: normal;
+        color: $m-dark;
+        margin: 0;
+        line-height: 1.2;
+        perspective: 600px;
+        overflow: visible;
+    }
+
+    .services_1_card_desc {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.65;
+        color: $m-dark;
+        margin: 0;
+    }
+
+    // ── Mobile: Splide arrows + dots ──────────────────────
+    .splide__arrows {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        z-index: 10;
+    }
+    .splide__arrow {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(10px) saturate(1.4);
+        -webkit-backdrop-filter: blur(10px) saturate(1.4);
+        border: 1px solid rgba($m-dark, 0.07);
+        box-shadow: 0 1px 8px rgba($m-dark, 0.06);
+        opacity: 1;
+        transition: background .22s, border-color .22s;
+
+        svg {
+            width: 11px;
+            height: 11px;
+            fill: rgba($m-dark, 0.5);
+            transition: fill .2s;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.82);
+            border-color: rgba($m-brown, 0.2);
+            svg { fill: $m-brown; }
+        }
+
+        &--prev { left: 8px; }
+        &--next { right: 8px; }
+    }
+
+    .splide__pagination {
+        bottom: -28px;
+
+        .splide__pagination__page {
+            background: rgba($m-dark, .2);
+            transition: background .2s;
+
+            &.is-active {
+                background: $m-brown;
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    // ── Mobile: scale + blur + transiciones rápidas ──────
+    @include only_mobile {
+        .splide__slide {
+            transition: transform .18s cubic-bezier(.25,1,.5,1),
+                        opacity   .18s ease,
+                        filter    .18s ease;
+            will-change: transform, opacity, filter;
+
+            &:not(.is-active) {
+                transform: scale(0.86);
+                opacity:   0.45;
+                filter:    blur(1.5px);
+            }
+
+            &.is-active {
+                transform: scale(1);
+                opacity:   1;
+                filter:    none;
+            }
+        }
+    }
+
+    // ── Tablet+: plain flex row (Splide destroyed) ────────
+    @include tablet {
+        .splide__track  { overflow: visible !important; }
+        .splide__list   {
+            display: flex !important;
+            gap: 32px;
+            transform: none !important;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .splide__slide  {
+            flex: 1 !important;
+            width: auto !important;
+            margin: 0 !important;
+        }
+    }
+}

@@ -7,5 +7,7 @@
         include_once( 'sections/section_clients/js/script.js' );
         include_once( 'sections/section_form/js/script.js' );
         include_once( 'sections/section_backtop/js/script.js' );
+        include_once( 'sections/section_hero_1/js/script.js' );
+        include_once( 'sections/section_services_1/js/script.js' );
     ?>
 </script>
