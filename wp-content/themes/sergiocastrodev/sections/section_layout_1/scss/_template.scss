@@ -3,8 +3,12 @@
 @use "variables" as *;
 
 .section_layout_1 {
-    padding: 80px 20px 40px;
-    background-color: $m-dark;
+    padding: 110px 20px 80px;
+    background-color: $m-cream;
+
+    @include desktop {
+        padding: 130px 20px 100px;
+    }
 
     .section_width_layout_1 {
         max-width: 1200px;
@@ -14,16 +18,25 @@
     // ── Título ────────────────────────────────────────────
     .layout_1_titulo {
         font-family: $secondary;
-        font-size: clamp(24px, 4vw, 42px);
+        font-size: clamp(28px, 4.5vw, 48px);
         font-weight: normal;
-        color: $m-cream;
-        margin: 0 0 28px;
-        line-height: 1.2;
-        text-align: left;
+        color: $m-dark;
+        margin: 0 0 44px;
+        line-height: 1.15;
+        text-align: center;
+        letter-spacing: 0.01em;
 
-        @include tablet {
-            text-align: right;
-            margin-bottom: 36px;
+        @include desktop {
+            margin-bottom: 56px;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: $m-gold;
+            margin: 14px auto 0;
         }
     }
 
@@ -67,6 +80,21 @@
             box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55);
         }
 
+        // Overlay oscuro para legibilidad del texto
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(to top, rgba($m-dark, 0.92) 0%, rgba($m-dark, 0.45) 55%, rgba($m-dark, 0.08) 100%);
+            transition: background .35s;
+            pointer-events: none;
+        }
+
+        &:hover::after {
+            background: linear-gradient(to top, rgba($m-dark, 0.97) 0%, rgba($m-dark, 0.55) 65%, rgba($m-dark, 0.15) 100%);
+        }
+
         // Patrón alternante en desktop: fila impar → grande+pequeña, fila par → pequeña+grande
         @include desktop {
             &:nth-child(4n+1),
@@ -86,20 +114,29 @@
         }
     }
 
-    .layout_1_card_overlay {
+    .layout_1_card_figure {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba($m-dark, 0.92) 0%, rgba($m-dark, 0.45) 55%, rgba($m-dark, 0.08) 100%);
-        transition: background .35s;
+        z-index: 1;
+        margin: 0;
+        overflow: hidden;
 
-        .layout_1_card:hover & {
-            background: linear-gradient(to top, rgba($m-dark, 0.97) 0%, rgba($m-dark, 0.55) 65%, rgba($m-dark, 0.15) 100%);
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .65s cubic-bezier(.25, .1, .25, 1);
         }
     }
 
-    .layout_1_card_content {
+    .layout_1_card:hover .layout_1_card_figure img {
+        transform: scale(1.07);
+    }
+
+    .layout_1_card_info {
         position: relative;
-        z-index: 2;
+        z-index: 3;
         padding: 20px;
         @include flexbox;
         @include flex-direction(column);
@@ -112,19 +149,30 @@
 
     .layout_1_card_label {
         font-family: $secondary-italic;
-        font-size: 14px;
-        color: rgba($m-cream, 0.65);
+        font-size: 12px;
+        color: rgba($m-cream, 0.6);
         font-weight: normal;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
     }
 
     .layout_1_card_title {
         font-family: $secondary;
         font-size: clamp(22px, 3.5vw, 36px);
         font-weight: normal;
-        color: $m-cream;
         margin: 0;
         line-height: 1.1;
+
+        a {
+            color: $m-cream;
+            text-decoration: none;
+            background-image: none;
+            font-family: $secondary;
+            font-size: clamp(22px, 3.5vw, 36px);
+            font-weight: normal;
+            margin: 0;
+            line-height: 1.1;
+        }
     }
 
     .layout_1_card_desc {
@@ -132,25 +180,22 @@
         font-size: 15px;
         line-height: 1.6;
         color: rgba($m-cream, 0.72);
-        margin: 4px 0 0;
+        margin: 0;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transform: translateY(14px);
+        transition: opacity .55s ease .1s,
+                    transform .65s cubic-bezier(.22, .61, .36, 1) .1s,
+                    max-height .75s cubic-bezier(.22, .61, .36, 1),
+                    margin-top .65s cubic-bezier(.22, .61, .36, 1);
     }
 
-    .layout_1_card_link {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 6px 16px;
-        font-family: $primary;
-        font-size: 13px;
-        color: $m-cream;
-        border: 1px solid rgba($m-cream, 0.38);
-        border-radius: 4px;
-        text-decoration: none;
-        align-self: flex-start;
-        transition: background .25s, border-color .25s;
-
-        &:hover {
-            background: rgba($m-cream, 0.12);
-            border-color: rgba($m-cream, 0.7);
-        }
+    .layout_1_card:hover .layout_1_card_desc {
+        opacity: 1;
+        max-height: 160px;
+        margin-top: 8px;
+        transform: translateY(0);
     }
+
 }

@@ -1,0 +1,257 @@
+@use "sass:color";
+@use "../../../assets/scss/variables" as *;
+@use "../../../assets/scss/mixins" as *;
+@use "variables" as *;
+
+.section_products_1 {
+    background-color: $m-cream;
+    padding: 60px 24px 80px;
+
+    @include desktop {
+        padding: 80px 64px 99px;
+    }
+
+    .section_width_products_1 {
+        max-width: 1152px;
+        margin: 0 auto;
+    }
+
+    // ── Header ────────────────────────────────────────────
+    .products_1_header {
+        text-align: center;
+        margin-bottom: 40px;
+
+        @include desktop {
+            margin-bottom: 56px;
+        }
+    }
+
+    .products_1_titulo {
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1.15;
+        color: $m-text;
+        margin: 0 0 16px;
+
+        &::after {
+            content: '';
+            display: block;
+            width: 96px;
+            height: 4px;
+            background: $m-brown;
+            margin: 16px auto 0;
+        }
+    }
+
+    .products_1_subtitulo {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.65;
+        color: $m-body;
+        margin: 0 auto;
+        max-width: 580px;
+    }
+
+    // ── Lista de productos ────────────────────────────────
+    .products_1_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+
+        @include tablet {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: stretch;
+        }
+
+        @include desktop {
+            gap: 28px;
+        }
+    }
+
+    // ── Card ──────────────────────────────────────────────
+    .products_1_card {
+        width: 100%;
+        max-width: 365px;
+        background: $m-card;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow:
+            0 2px 4px rgba($m-text, 0.04),
+            0 8px 24px rgba($m-text, 0.07);
+        transition: box-shadow .3s, transform .3s;
+
+        &:hover {
+            box-shadow:
+                0 4px 8px rgba($m-text, 0.06),
+                0 16px 40px rgba($m-text, 0.12);
+            transform: translateY(-4px);
+        }
+
+        @include tablet {
+            flex: 1 1 calc(50% - 12px);
+            max-width: calc(50% - 12px);
+        }
+
+        @include desktop {
+            flex: 1 1 calc(33.333% - 19px);
+            max-width: calc(33.333% - 19px);
+        }
+    }
+
+    // ── Imagen de la card ─────────────────────────────────
+    .products_1_card_image_wrap {
+        position: relative;
+    }
+
+    .products_1_card_figure {
+        margin: 0;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background-color: $m-img-bg;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .65s cubic-bezier(.25, .1, .25, 1);
+        }
+    }
+
+    .products_1_card:hover .products_1_card_figure img {
+        transform: scale(1.05);
+    }
+
+    // ── Badge (etiqueta sobre la imagen) ──────────────────
+    .products_1_card_badge {
+        position: absolute;
+        top: 13px;
+        left: 16px;
+        background: $m-badge;
+        color: #fff;
+        font-family: $primary;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.33;
+        letter-spacing: 0.05em;
+        padding: 3px 12px;
+        border-radius: 12px;
+        pointer-events: none;
+    }
+
+    // ── Contenido textual ─────────────────────────────────
+    .products_1_card_content {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .products_1_card_title {
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.35;
+        color: $m-text;
+        margin: 0;
+
+        a {
+            font-family: inherit;
+            font-weight: inherit;
+            color: inherit;
+            text-decoration: none;
+            transition: color .2s;
+
+            &:hover {
+                color: $m-brown;
+            }
+        }
+    }
+
+    .products_1_card_desc {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.65;
+        color: $m-body;
+        margin: 0;
+    }
+
+    // ── Footer: precio + enlace ───────────────────────────
+    .products_1_card_footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        padding-top: 16px;
+        border-top: 1px solid rgba($m-text, 0.08);
+    }
+
+    .products_1_card_price {
+        font-family: $primary;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.55;
+        color: $m-brown;
+    }
+
+    .products_1_card_link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: $primary;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.43;
+        color: $m-brown;
+        text-decoration: none;
+        border-bottom: 1px solid $m-brown;
+        padding-bottom: 1px;
+        transition: opacity .2s;
+
+        svg {
+            flex-shrink: 0;
+
+            path {
+                stroke: $m-brown;
+            }
+        }
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    // ── CTA principal ─────────────────────────────────────
+    .products_1_cta {
+        text-align: center;
+        margin-top: 48px;
+
+        @include desktop {
+            margin-top: 56px;
+        }
+    }
+
+    .products_1_cta_btn {
+        display: inline-block;
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.35;
+        color: #fff;
+        background: $m-brown;
+        border-radius: 12px;
+        padding: 9px 32px 13px;
+        text-decoration: none;
+        transition: background .25s, transform .2s;
+
+        &:hover {
+            background: color.adjust($m-brown, $lightness: -8%);
+            transform: translateY(-2px);
+        }
+    }
+}

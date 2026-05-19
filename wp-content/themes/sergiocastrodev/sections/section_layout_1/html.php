@@ -1,40 +1,51 @@
 <?php
-$titulo = 'Nuestra Cosecha Principal';
+$post_id = get_the_ID();
+$prefix  = 'section_layout_1_';
 
-$cards = [
-    [
-        'bg'        => 'linear-gradient(160deg, #8D4B00 0%, #271500 100%)',
-        'label'     => 'El alma de la colmena',
-        'title'     => 'Miel Artesanal',
-        'desc'      => 'Métodos de cosecha de bajo impacto que preservan el ecosistema y la calidad natural.',
-        'link_url'  => '',
-        'link_text' => '',
-    ],
-    [
-        'bg'        => 'linear-gradient(160deg, #C8920A 0%, #7A4800 100%)',
-        'label'     => 'Polinización silvestre',
-        'title'     => 'Polen de Abeja',
-        'desc'      => '',
-        'link_url'  => '',
-        'link_text' => '',
-    ],
-    [
-        'bg'        => 'linear-gradient(160deg, #6B6040 0%, #3D2B1A 100%)',
-        'label'     => 'Vitalidad Real',
-        'title'     => 'Jalea Real',
-        'desc'      => '',
-        'link_url'  => '',
-        'link_text' => '',
-    ],
-    [
-        'bg'        => 'linear-gradient(160deg, #4A3020 0%, #1A0800 100%)',
-        'label'     => 'Usos tradicionales',
-        'title'     => 'Cera de Abeja',
-        'desc'      => 'Elaborada con la pureza que ofrece la naturaleza, sin aditivos ni procesos artificiales.',
-        'link_url'  => '',
-        'link_text' => '',
-    ],
-];
+$titulo = get_post_meta($post_id, $prefix . 'titulo', true);
+$cards  = get_post_meta($post_id, $prefix . 'cards',  true);
+
+// ── Fallbacks ────────────────────────────────────────────────────────────────
+if (empty($titulo)) {
+    $titulo = 'Nuestra Cosecha Principal';
+}
+
+if (empty($cards) || !is_array($cards)) {
+    $cards = [
+        [
+            'bg'       => 'linear-gradient(160deg, #8D4B00 0%, #271500 100%)',
+            'img'      => '',
+            'label'    => 'El alma de la colmena',
+            'title'    => 'Miel Artesanal',
+            'desc'     => 'Métodos de cosecha de bajo impacto que preservan el ecosistema y la calidad natural.',
+            'link_url' => '#',
+        ],
+        [
+            'bg'       => 'linear-gradient(160deg, #C8920A 0%, #7A4800 100%)',
+            'img'      => '',
+            'label'    => 'Polinización silvestre',
+            'title'    => 'Polen de Abeja',
+            'desc'     => 'Pequeñas perlas doradas cargadas de proteínas, vitaminas y minerales esenciales.',
+            'link_url' => '#',
+        ],
+        [
+            'bg'       => 'linear-gradient(160deg, #6B6040 0%, #3D2B1A 100%)',
+            'img'      => '',
+            'label'    => 'Vitalidad Real',
+            'title'    => 'Jalea Real',
+            'desc'     => 'El alimento exclusivo de la reina, reservado durante siglos por sus propiedades únicas.',
+            'link_url' => '#',
+        ],
+        [
+            'bg'       => 'linear-gradient(160deg, #4A3020 0%, #1A0800 100%)',
+            'img'      => '',
+            'label'    => 'Usos tradicionales',
+            'title'    => 'Cera de Abeja',
+            'desc'     => 'Elaborada con la pureza que ofrece la naturaleza, sin aditivos ni procesos artificiales.',
+            'link_url' => '#',
+        ],
+    ];
+}
 
 $total = count($cards);
 ?>
@@ -45,29 +56,44 @@ $total = count($cards);
 
         <div class="layout_1_grid">
             <?php foreach ($cards as $i => $card) :
-                $is_solo   = ($i === $total - 1) && ($total % 2 !== 0);
-                $card_class = 'layout_1_card' . ($is_solo ? ' is-solo' : '');
+                $bg         = !empty($card['bg']) ? $card['bg'] : 'linear-gradient(160deg, #8D4B00 0%, #271500 100%)';
+                $img        = !empty($card['img']) ? $card['img'] : '';
+                $label      = isset($card['label']) ? $card['label'] : '';
+                $title      = isset($card['title']) ? $card['title'] : '';
+                $desc       = isset($card['desc'])  ? $card['desc']  : '';
+                $link_url   = !empty($card['link_url']) ? $card['link_url'] : '#';
+
+                $is_solo    = ($i === $total - 1) && ($total % 2 !== 0);
+                $card_class = 'layout_1_card false_link' . ($is_solo ? ' is-solo' : '');
             ?>
-            <div class="<?php echo esc_attr($card_class); ?>" style="background-image: <?php echo $card['bg']; ?>">
-                <div class="layout_1_card_overlay"></div>
-                <div class="layout_1_card_content">
+            <div class="<?php echo esc_attr($card_class); ?>"
+                 data-link="h3"
+                 data-parent="0"
+                 style="background-image: <?php echo $bg; ?>">
 
-                    <?php if ($card['label']) : ?>
-                    <span class="layout_1_card_label"><?php echo esc_html($card['label']); ?></span>
+                <figure class="layout_1_card_figure">
+                    <?php if ($img) : ?>
+                    <img src="<?php echo esc_url($img); ?>"
+                         alt="<?php echo esc_attr($title); ?>"
+                         loading="lazy"
+                         decoding="async">
+                    <?php endif; ?>
+                </figure>
+
+                <div class="layout_1_card_info">
+
+                    <?php if ($label) : ?>
+                    <span class="layout_1_card_label"><?php echo esc_html($label); ?></span>
                     <?php endif; ?>
 
-                    <h3 class="layout_1_card_title"><?php echo esc_html($card['title']); ?></h3>
-
-                    <?php if ($card['desc']) : ?>
-                    <p class="layout_1_card_desc"><?php echo esc_html($card['desc']); ?></p>
+                    <?php if ($title) : ?>
+                    <h3 class="layout_1_card_title">
+                        <a href="<?php echo esc_url($link_url); ?>"><?php echo esc_html($title); ?></a>
+                    </h3>
                     <?php endif; ?>
 
-                    <?php if ($card['link_url']) : ?>
-                    <a class="layout_1_card_link"
-                       href="<?php echo esc_url($card['link_url']); ?>"
-                       target="_blank" rel="noopener noreferrer">
-                        <?php echo esc_html($card['link_text'] ?: 'Descubrir'); ?>
-                    </a>
+                    <?php if ($desc) : ?>
+                    <p class="layout_1_card_desc"><?php echo esc_html($desc); ?></p>
                     <?php endif; ?>
 
                 </div>

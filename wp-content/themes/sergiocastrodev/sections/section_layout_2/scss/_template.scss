@@ -1,0 +1,267 @@
+@use "../../../assets/scss/variables" as *;
+@use "../../../assets/scss/mixins" as *;
+@use "variables" as *;
+
+.section_layout_2 {
+    position: relative;
+    padding: 60px 24px;
+    background-color: $m-cream;
+
+    @include desktop {
+        padding: 60px 64px 99px;
+    }
+
+    .section_width_layout_2 {
+        max-width: 1152px;
+        margin: 0 auto;
+    }
+
+    // ── Progress vertical (scroll indicator) ──────────────
+    .layout_2_progress {
+        position: absolute;
+        left: 4px;
+        top: 60px;
+        bottom: 60px;
+        width: 12px;
+        pointer-events: none;
+
+        @include desktop {
+            left: 32px;
+            top: 80px;
+            bottom: 80px;
+        }
+    }
+
+    .layout_2_progress_svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .layout_2_progress_track {
+        stroke: rgba($m-brown, 0.18);
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .layout_2_progress_fill {
+        stroke: $m-brown;
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+        // strokeDashoffset se anima con GSAP (estado inicial 1 = oculto)
+    }
+
+    .layout_2_progress_marker {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 10px;
+        height: 10px;
+        background: $m-brown;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 10px rgba($m-brown, 0.5);
+        opacity: 0;
+        // Se anima top (0 → 100%) y opacity vía GSAP
+    }
+
+    // ── Header ────────────────────────────────────────────
+    .layout_2_header {
+        text-align: center;
+        margin-bottom: 64px;
+
+        @include desktop {
+            margin-bottom: 80px;
+        }
+    }
+
+    .layout_2_caption {
+        display: inline-block;
+        font-family: $secondary-italic;
+        font-size: 12px;
+        color: $m-brown;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .layout_2_titulo {
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(28px, 4.5vw, 48px);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        color: $m-dark;
+        margin: 0;
+
+        &::after {
+            content: '';
+            display: block;
+            width: 96px;
+            height: 4px;
+            background: $m-brown;
+            margin: 16px auto 0;
+        }
+    }
+
+    // ── Steps wrapper ─────────────────────────────────────
+    .layout_2_steps {
+        @include flexbox;
+        @include flex-direction(column);
+        gap: 72px;
+
+        @include desktop {
+            gap: 96px;
+        }
+    }
+
+    // ── Step ──────────────────────────────────────────────
+    .layout_2_step {
+        @include flexbox;
+        @include flex-direction(column);
+        @include align-items(center);
+        gap: 36px;
+
+        @include tablet {
+            @include flex-direction(row);
+            @include align-items(center);
+            gap: 48px;
+
+            // zig-zag: pasos pares invierten el orden
+            &:nth-child(even) {
+                @include flex-direction(row-reverse);
+            }
+        }
+
+        @include desktop {
+            gap: 64px;
+        }
+    }
+
+    // ── Visual: figura + número absoluto ──────────────────
+    .layout_2_step_visual {
+        position: relative;
+        width: 100%;
+        max-width: 320px;
+        aspect-ratio: 1 / 1;
+        flex-shrink: 0;
+
+        @include tablet {
+            flex: 0 0 auto;
+            width: 320px;
+            height: 320px;
+        }
+    }
+
+    .layout_2_step_figure {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: $m-overlay; // tinte cálido cuando no hay imagen
+        border-radius: 16px;
+        box-shadow:
+            2px 7px 5.4px #BEBDBC,
+            0 10px 40px -10px rgba($m-brown, 0.35);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .8s cubic-bezier(.25, .1, .25, 1);
+        }
+
+        &:hover img {
+            transform: scale(1.04);
+        }
+    }
+
+    // Número grande absoluto en la esquina exterior de la figura
+    .layout_2_step_number {
+        position: absolute;
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(72px, 10vw, 120px);
+        line-height: 1;
+        color: $m-dark;
+        letter-spacing: 0;
+        pointer-events: none;
+
+        // Mobile: pegado a la esquina inferior-derecha, sobresaliendo
+        right: -10px;
+        bottom: -36px;
+
+        // Desktop: bottom-right del visual (imagen a la izquierda)
+        @include tablet {
+            right: -32px;
+            bottom: -60px;
+            left: auto;
+        }
+    }
+
+    // Pasos pares (imagen a la derecha) → número sobresale hacia la izquierda
+    // Regla escrita como hermana para evitar trampa SCSS de `&` en nesting
+    .layout_2_step:nth-child(even) .layout_2_step_number {
+        @include tablet {
+            left: -32px;
+            right: auto;
+            bottom: -60px;
+        }
+    }
+
+    // Pasos pares: texto alineado a la derecha (espejo del diseño)
+    .layout_2_step:nth-child(even) .layout_2_step_content {
+        @include tablet {
+            text-align: right;
+            @include align-items(flex-end);
+        }
+    }
+
+    .layout_2_step:nth-child(even) .layout_2_step_desc {
+        @include tablet {
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+
+    // ── Contenido textual ────────────────────────────────
+    .layout_2_step_content {
+        @include flexbox;
+        @include flex-direction(column);
+        gap: 16px;
+        text-align: center;
+
+        @include tablet {
+            text-align: left;
+            flex: 1;
+            min-width: 0;
+            max-width: 544px;
+        }
+    }
+
+    .layout_2_step_title {
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(22px, 2.6vw, 30px);
+        line-height: 1.25;
+        color: $m-dark;
+        margin: 0;
+    }
+
+    .layout_2_step_desc {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.65;
+        color: rgba($m-dark, 0.72);
+        margin: 0;
+        max-width: 512px;
+
+        @include only_mobile {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

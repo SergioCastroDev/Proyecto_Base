@@ -225,6 +225,38 @@ $img_mobile  = $imgs_data[0]['img_mobile']  ?? $img_desktop;
 - `<picture>` con `<source>` para breakpoints responsive
 - Escapado siempre: `esc_url()`, `esc_html()`, `wp_kses_post()`
 
+#### Fallbacks robustos — patrón obligatorio en `html.php`
+
+Cuando el bloque se renderiza por primera vez (sin datos guardados en CMB2), no debe verse roto. La fase 3B **no destruye los datos de la 3A** — los convierte en fallback:
+
+```php
+$titulo = get_post_meta($post_id, $prefix . 'titulo', true);
+$cards  = get_post_meta($post_id, $prefix . 'cards',  true);
+
+// Fallback del título
+if (empty($titulo)) {
+    $titulo = 'Título de la fase 3A';
+}
+
+// Fallback del array completo de cards
+if (empty($cards) || !is_array($cards)) {
+    $cards = [
+        ['title' => 'Tarjeta 1', 'desc' => '...' /* mismo contenido de la 3A */],
+        ['title' => 'Tarjeta 2', 'desc' => '...'],
+        // ...
+    ];
+}
+
+// Fallback por campo dentro del foreach
+foreach ($cards as $card) {
+    $link_url = !empty($card['link_url']) ? $card['link_url'] : '#';
+    $label    = $card['label'] ?? '';
+    // ...
+}
+```
+
+El bloque queda visualmente completo desde el primer load aunque el editor no haya tocado el admin todavía.
+
 ---
 
 ### FASE 4 — Integración completa
@@ -650,6 +682,189 @@ Los valores `x * 22` / `y * 16` y `transformPerspective: 500` son los validados 
 
 ---
 
+### Patrón estructura de tarjeta con imagen de fondo
+
+Estructura semántica validada en `section_layout_1`. Sustituye el clásico div-bg + div-overlay + div-content por un esquema más limpio y semántico:
+
+```html
+<div class="XXX_card false_link"
+     data-link="h3"
+     data-parent="0"
+     style="background-image: <gradiente fallback>;">
+
+    <figure class="XXX_card_figure">
+        <img src="..." alt="..." loading="lazy" decoding="async">
+    </figure>
+
+    <div class="XXX_card_info">
+        <h3 class="XXX_card_title">
+            <a href="...">Título</a>
+        </h3>
+        <p class="XXX_card_desc">Descripción</p>
+    </div>
+</div>
+```
+
+**Capas en z-index:**
+1. Card background gradiente inline (`z-auto`) — fallback si no hay imagen
+2. `<figure>` con `<img>` (`z: 1`) — la foto real
+3. Overlay oscuro `::after` (`z: 2`) — legibilidad del texto
+4. `.XXX_card_info` (`z: 3`) — contenido
+
+```scss
+.XXX_card {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: linear-gradient(to top,
+            rgba($dark, 0.92) 0%,
+            rgba($dark, 0.45) 55%,
+            rgba($dark, 0.08) 100%);
+        pointer-events: none;
+    }
+}
+
+.XXX_card_figure {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    margin: 0;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .65s cubic-bezier(.25, .1, .25, 1);
+    }
+}
+
+.XXX_card:hover .XXX_card_figure img { transform: scale(1.07); }
+
+.XXX_card_info { position: relative; z-index: 3; }
+```
+
+**Ventajas:**
+- El `<img>` permite alt, srcset, lazy loading nativo (WPO + accesibilidad)
+- El overlay vive en un pseudo-element — un div menos en el DOM
+- El gradiente del card sirve de fallback si la imagen no carga
+
+---
+
+### Patrón hover-reveal de descripción
+
+La descripción aparece al hacer hover sobre la tarjeta con animación orgánica:
+
+```scss
+.XXX_card_desc {
+    margin: 0;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(14px);
+    transition: opacity .55s ease .1s,
+                transform .65s cubic-bezier(.22, .61, .36, 1) .1s,
+                max-height .75s cubic-bezier(.22, .61, .36, 1),
+                margin-top .65s cubic-bezier(.22, .61, .36, 1);
+}
+
+.XXX_card:hover .XXX_card_desc {
+    opacity: 1;
+    max-height: 160px;
+    margin-top: 8px;
+    transform: translateY(0);
+}
+```
+
+**Claves:**
+- `max-height` (no `height`) — admite contenido de altura variable
+- Delay de `0.1s` en `opacity` y `transform` → primero crece el espacio, después aparece el texto
+- `translateY(14px)` inicial — un valor de movimiento visible
+- Con el contenido en `flex-end` dentro de la card, el título sube naturalmente cuando la descripción aparece
+
+---
+
+### Patrón false_link — toda la tarjeta clickable
+
+Para que clicar cualquier punto de la tarjeta dispare el enlace del título.
+
+**HTML:**
+```html
+<div class="XXX_card false_link" data-link="h3" data-parent="0">
+    <h3><a href="...">Título</a></h3>
+</div>
+```
+
+**JS del bloque** — la función ya existe en `general-functions.js` con el prefijo `ecode_`. **Copiarla al script.js del bloque sin el prefijo** en lugar de editar el global:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementsByClassName('false_link').length !== 0) {
+        add_events_false_link();
+    }
+});
+
+function add_events_false_link() {
+    var array_false_link = document.getElementsByClassName('false_link');
+    for (var i = 0; i < array_false_link.length; i++) {
+        array_false_link[i].onclick = function (e) {
+            if (e.target.closest('a')) return; // clics directos sobre <a> navegan normal
+            var data_link   = this.getAttribute('data-link');
+            var data_parent = this.getAttribute('data-parent');
+            if (data_parent === '0' && data_link === 'h3'
+                && this.querySelectorAll('h3 a').length !== 0) {
+                this.querySelectorAll('h3 a')[0].click();
+            }
+            // ... resto de variantes h2, p, h3_parent, etc.
+        };
+    }
+}
+```
+
+Atributos `data-*`:
+- `data-link`: tag del enlace a disparar (`h3`, `h2`, `p`, `h2_parent`, `h3_parent`)
+- `data-parent`: `0` busca dentro del propio elemento; otro valor busca en su parent
+
+**Razón para copiar y no editar:** el global queda intacto y el bloque es autónomo.
+
+---
+
+### CSS Grid vs Flex para tarjetas wrap-friendly
+
+Para grids de N columnas que deben **wrappear automáticamente** al añadir más tarjetas (ej. 4 tarjetas en una fila, la 5ª salta a fila nueva), **usar CSS Grid, no Flex**:
+
+```scss
+@include tablet {
+    .XXX_cards_list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); // 2 cols en tablet
+        gap: 24px;
+    }
+}
+@include desktop {
+    .XXX_cards_list {
+        grid-template-columns: repeat(4, 1fr); // 4 cols en desktop
+        gap: 32px;
+    }
+}
+```
+
+**Trampa de flex que evitamos:** con `flex: 1`, los items tienen `min-width: auto` por defecto (= ancho del contenido). Una sola tarjeta con texto sin espacios fuerza la expansión y desborda el contenedor. La solución requiere añadir `flex: 1 1 0 + min-width: 0`. Grid no tiene este problema.
+
+**Si por alguna razón se necesita flex con cards**, usar SIEMPRE:
+```scss
+.XXX_slide { flex: 1 1 0 !important; min-width: 0 !important; }
+```
+
+---
+
 ### Patrón de video en bloques hero
 
 Cuando el bloque incluye un reproductor de vídeo:
@@ -744,3 +959,92 @@ Compilación única:
 ```bash
 sass --style=compressed --no-source-map assets/scss/style.scss:assets/css/style.css
 ```
+
+---
+
+## Trampas conocidas
+
+### SCSS — `&` parent reference dentro de nesting
+
+Cuando se anida una regla `hover` dentro del bloque del elemento que se quiere modificar, `&` se sustituye por toda la cadena padre y el orden del selector compilado puede salir mal:
+
+```scss
+// MAL — compila ".other:hover .parent .target"
+.parent {
+    .target {
+        .other:hover & {
+            color: red;
+        }
+    }
+}
+```
+
+El `&` (= `.parent .target`) acaba DESPUÉS de `.other:hover`, lo que no coincide con el DOM real cuando `.other` y `.target` son hermanos.
+
+**Solución:** escribir la regla hover como hermana al mismo nivel de nesting:
+
+```scss
+// BIEN — compila ".parent .target" y ".parent .other:hover .target"
+.parent {
+    .target {
+        color: black;
+    }
+    .other:hover .target {
+        color: red;
+    }
+}
+```
+
+---
+
+### Sticky nav: padding-top en bloques con título pegado al borde
+
+Si el primer elemento del bloque es un `<h2>` en el borde superior y el header es `position: fixed`, el título queda oculto bajo el nav al hacer scroll a la sección.
+
+**Excepción al padding estándar `80px 20px 40px`** — solo cuando aplica:
+```scss
+.section_XXX {
+    padding: 110px 20px 80px;        // top suficiente para librar el nav fijo (~90px)
+    @include desktop {
+        padding: 130px 20px 100px;
+    }
+}
+```
+
+Esto solo afecta a bloques donde el primer contenido visible es un titular en el borde superior. La mayoría de bloques (que tienen padding/margen interno antes del primer texto) no necesitan esta excepción.
+
+---
+
+### CSS `:hover` no se dispara desde `chrome-devtools__hover` ni desde `dispatchEvent`
+
+Para verificar visualmente un efecto hover programáticamente: inyectar una regla CSS temporal forzando el estado, screenshot, y limpiar:
+
+```javascript
+const style = document.createElement('style');
+style.id = 'temp-hover-test';
+style.textContent = `.XXX_card:first-child .XXX_card_desc {
+    opacity: 1 !important; max-height: 160px !important;
+}`;
+document.head.appendChild(style);
+// ... screenshot ...
+document.getElementById('temp-hover-test').remove();
+```
+
+---
+
+## Verificación visual obligatoria
+
+Antes de dar por entregado un bloque, **no basta con que el código compile y no haya errores en consola**: hay que verificar la renderización real con `chrome-devtools`.
+
+Pasos:
+1. `chrome-devtools__navigate_page` → URL del template
+2. `evaluate_script` → `window.scrollTo({ top: section.offsetTop, behavior: 'instant' })`
+3. `chrome-devtools__take_screenshot` y comparar visualmente con el diseño
+4. Repetir en al menos 2 breakpoints (mobile ~400px y desktop ~1500px) usando `resize_page`
+5. Para hover: inyectar regla temporal (ver trampa anterior)
+
+Estados a verificar:
+- Estado base (sin hover, sin scroll-trigger disparado)
+- Estado con animación de entrada completada (limpiar props GSAP con `gsap.set(el, {clearProps:'all'})`)
+- Estado de hover
+- Comportamiento responsive (al menos mobile y desktop)

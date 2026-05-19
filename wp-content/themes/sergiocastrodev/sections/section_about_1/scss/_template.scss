@@ -1,0 +1,78 @@
+@use "../../../assets/scss/variables" as *;
+@use "../../../assets/scss/mixins" as *;
+@use "variables" as *;
+
+.section_about_1 {
+    background-color: $m-cream;
+    padding: 60px 24px;
+
+    @include desktop {
+        padding: 80px 64px;
+    }
+
+    .section_width_about_1 {
+        max-width: 1152px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        @include tablet {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 48px;
+        }
+
+        @include desktop {
+            gap: 64px;
+        }
+    }
+
+    // ── Columna texto ─────────────────────────────────────
+    .about_1_label {
+        display: block;
+        font-family: $primary-semibold;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 1.43;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: $m-label;
+        margin-bottom: 16px;
+    }
+
+    .about_1_titulo {
+        font-family: $secondary-semibold;
+        font-weight: normal;
+        font-size: clamp(32px, 4vw, 48px);
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        color: $m-text;
+        margin: 0 0 32px;
+    }
+
+    .about_1_desc {
+        font-family: $primary;
+        font-size: 18px;
+        line-height: 1.56;
+        color: $m-text;
+        margin: 0;
+    }
+
+    // ── Columna imagen ────────────────────────────────────
+    .about_1_figure {
+        display: block;
+        border-radius: 64px 0 64px 0;
+        overflow: hidden;
+        max-height: 400px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

@@ -1,0 +1,101 @@
+@use "sass:color";
+@use "../../../assets/scss/variables" as *;
+@use "../../../assets/scss/mixins" as *;
+@use "variables" as *;
+
+.section_cta_1 {
+    background-color: $m-cream;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 60px 24px;
+
+    @include desktop {
+        padding: 60px 64px;
+    }
+
+    .section_width_cta_1 {
+        max-width: 1152px;
+        margin: 0 auto;
+    }
+
+    // ── Card contenedor ───────────────────────────────────
+    .cta_1_card {
+        background: $m-card-bg;
+        border: 1px solid $m-card-border;
+        border-radius: 48px;
+        padding: 60px 32px;
+        text-align: center;
+
+        @include tablet {
+            padding: 72px 64px;
+        }
+
+        @include desktop {
+            padding: 80px 96px;
+        }
+    }
+
+    &.has-bg .cta_1_card {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    // ── Textos ────────────────────────────────────────────
+    .cta_1_titulo {
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: $m-text;
+        margin: 0 0 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .cta_1_subtitulo {
+        font-family: $secondary-italic;
+        font-size: clamp(18px, 2.5vw, 24px);
+        line-height: 1.35;
+        color: $m-brown;
+        margin: 0 0 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .cta_1_desc {
+        font-family: $primary;
+        font-size: 15px;
+        line-height: 1.65;
+        color: $m-body;
+        max-width: 480px;
+        margin: 0 auto 24px;
+        overflow-wrap: anywhere;
+
+        p, ul, ol { margin: 0 0 12px; }
+        p:last-child, ul:last-child, ol:last-child { margin-bottom: 0; }
+        strong { font-family: $primary-semibold; font-weight: normal; }
+        a { color: $m-brown; text-decoration: underline; }
+    }
+
+    // ── Botón ─────────────────────────────────────────────
+    .cta_1_btn {
+        display: inline-block;
+        font-family: $secondary;
+        font-weight: normal;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.35;
+        color: #fff;
+        background: $m-brown;
+        border-radius: 12px;
+        padding: 9px 28px 13px;
+        text-decoration: none;
+        transition: background .25s, transform .2s;
+
+        &:hover {
+            background: color.adjust($m-brown, $lightness: -8%);
+            transform: translateY(-2px);
+        }
+    }
+}

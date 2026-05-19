@@ -31,7 +31,19 @@
       "PowerShell(& \"C:\\\\laragon\\\\bin\\\\mysql\\\\mysql-8.0.35-winx64\\\\bin\\\\mysql.exe\" -u root -e \"SHOW DATABASES;\" 2>&1)",
       "Bash(/c/laragon/bin/mysql/mysql-8.4.3-winx64/bin/mysql.exe *)",
       "PowerShell(net stop *)",
-      "PowerShell(cmd /c \"where node 2>nul\"; cmd /c \"where npm 2>nul\"; cmd /c \"where ruby 2>nul\"; cmd /c \"where choco 2>nul\"; cmd /c \"where scoop 2>nul\")"
+      "PowerShell(cmd /c \"where node 2>nul\"; cmd /c \"where npm 2>nul\"; cmd /c \"where ruby 2>nul\"; cmd /c \"where choco 2>nul\"; cmd /c \"where scoop 2>nul\")",
+      "Bash(npm --version)",
+      "Bash(claude mcp *)",
+      "PowerShell(Get-Process *)",
+      "mcp__figma__get_figma_data",
+      "Bash(curl *)",
+      "Bash(node *)",
+      "Bash(taskkill //F //PID 18772)",
+      "Bash(taskkill //F //PID 21592)",
+      "Bash(taskkill //F //PID 27196)",
+      "Bash(taskkill //F //PID 8416)",
+      "PowerShell(Copy-Item *)"
     ]
-  }
+  },
+  "enabledPlugins": {}
 }
